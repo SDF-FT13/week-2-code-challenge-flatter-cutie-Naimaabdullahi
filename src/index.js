@@ -10,9 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetBtn = document.getElementById("reset-btn");
     const characterForm = document.getElementById("character-form");
   
-    let currentCharacter = null; // Store selected character
+    let currentCharacter = null; 
   
-    // Fetch all characters and display in the character bar
     function fetchCharacters() {
       fetch(baseURL)
         .then(response => response.json())
@@ -22,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error("Error fetching characters:", error));
     }
   
-    // Display a character in the character bar
     function displayCharacterInBar(character) {
       const span = document.createElement("span");
       span.textContent = character.name;
@@ -31,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
       characterBar.appendChild(span);
     }
   
-    // Display character details
     function displayCharacterDetails(character) {
       currentCharacter = character;
       nameDisplay.textContent = character.name;
@@ -39,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
       voteCount.textContent = character.votes;
     }
   
-    // Handle vote submission
     votesForm.addEventListener("submit", (event) => {
       event.preventDefault();
       if (currentCharacter) {
@@ -47,25 +43,21 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCharacter.votes += newVotes;
         voteCount.textContent = currentCharacter.votes;
   
-        // Persist vote count to server
         updateCharacterVotes(currentCharacter);
         
-        votesInput.value = ""; // Clear input field
+        votesInput.value = ""; 
       }
     });
   
-    // Handle reset votes
     resetBtn.addEventListener("click", () => {
       if (currentCharacter) {
         currentCharacter.votes = 0;
         voteCount.textContent = 0;
   
-        // Persist reset votes to server
         updateCharacterVotes(currentCharacter);
       }
     });
   
-    // Update character votes on server
     function updateCharacterVotes(character) {
       fetch(`${baseURL}/${character.id}`, {
         method: "PATCH",
@@ -77,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(error => console.error("Error updating votes:", error));
     }
   
-    // Handle adding new character
     if (characterForm) {
       characterForm.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -87,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
           votes: 0
         };
   
-        // Add character to server
         fetch(baseURL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -103,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   
-    // Initialize the app
     fetchCharacters();
   });
   
